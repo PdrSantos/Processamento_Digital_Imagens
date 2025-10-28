@@ -45,7 +45,6 @@ class ImageProcessorApp:
         processada_frame = Frame(img_frame)
         processada_frame.pack(side='right', fill='both', expand=True)
 
-        # Barra de rolagem no painel lateral
         canvas = tk.Canvas(control_frame)
         scrollbar = ttk.Scrollbar(control_frame, orient="vertical", command=canvas.yview)
         scrollable_frame = ttk.Frame(canvas)
@@ -61,7 +60,7 @@ class ImageProcessorApp:
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
-        # ---------- Controles ----------
+        # ---------- Controles do projeto ----------
         ttk.Button(scrollable_frame, text="Carregar Imagem", command=self.carregar_imagem).pack(pady=5, fill='x')
 
         info_frame = ttk.LabelFrame(scrollable_frame, text="Informações da Imagem")
@@ -321,7 +320,6 @@ class ImageProcessorApp:
             plano *= 255  # Escala para visualização
             planos.append(plano.astype(np.uint8))
 
-        # Organiza os planos em uma grade 2x4
         linha1 = np.hstack(planos[:4])
         linha2 = np.hstack(planos[4:])
         grid = np.vstack([linha1, linha2])
@@ -331,13 +329,11 @@ class ImageProcessorApp:
         cv2.destroyAllWindows()
 
     def gerar_histograma(self):
-        # Prepara a imagem original
         if len(self.img_original.shape) == 3:
             img_original_cinza = cv2.cvtColor(self.img_original, cv2.COLOR_BGR2GRAY)
         else:
             img_original_cinza = self.img_original
 
-        # Prepara a imagem processada (se existir)
         if self.img_processada is not None:
             if len(self.img_processada.shape) == 3:
                 img_processada_cinza = cv2.cvtColor(self.img_processada, cv2.COLOR_BGR2GRAY)
@@ -346,10 +342,8 @@ class ImageProcessorApp:
         else:
             img_processada_cinza = None
 
-        # Geração dos histogramas lado a lado
         plt.figure(figsize=(12, 5))
 
-        # Histograma da imagem original
         plt.subplot(1, 2, 1)
         plt.title("Histograma - Imagem Original")
         plt.xlabel("Intensidade de Pixel (0-255)")
@@ -357,7 +351,6 @@ class ImageProcessorApp:
         plt.hist(img_original_cinza.ravel(), bins=256, range=(0, 256), color='gray', edgecolor='black')
         plt.grid(True, linestyle='--', linewidth=0.5)
 
-        # Histograma da imagem processada
         plt.subplot(1, 2, 2)
         plt.title("Histograma - Imagem Processada")
         plt.xlabel("Intensidade de Pixel (0-255)")
